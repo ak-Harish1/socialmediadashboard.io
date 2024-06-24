@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Scheduler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #686c79;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #a3c9ff;
+            
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, textarea, select, input, button {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        p {
+            margin: 5px 0;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Post Scheduler</h1>
+        <form method="POST">
+            <label for="content">Post Content:</label>
+            <textarea id="content" name="content" required></textarea>
+            <br>
+            <label for="platform">Platform:</label>
+            <select id="platform" name="platform" required>
+                {% for account in accounts %}
+                    <option value="{{ account.platform }}">{{ account.platform }} - {{ account.username }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="schedule_time">Schedule Time:</label>
+            <input type="datetime-local" id="schedule_time" name="schedule_time" required>
+            <br>
+            <button type="submit">Schedule Post</button>
+        </form>
+        <h2>Scheduled Posts</h2>
+        <ul>
+            {% for post in scheduled_posts %}
+                <li>
+                    <p>Content: {{ post.content }}</p>
+                    <p>Platform: {{ post.platform }}</p>
+                    <p>Scheduled Time: {{ post.schedule_time.strftime('%Y-%m-%d %H:%M') }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+</body>
+</html>
